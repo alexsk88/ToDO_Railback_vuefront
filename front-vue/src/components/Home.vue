@@ -2,8 +2,10 @@
   <div >
     <Navbar />
     <div class="container my-5">
-      <h1>My Tasks</h1><br>
-      <ul class="nav nav-tabs" id="tabtasks" role="tablist">
+      <h1>My Tasks</h1>
+
+      <router-link to="/addtask"  class="btn btn-danger my-3 text-white">Add task</router-link>
+      <ul class="nav nav-tabs tabstaks_box" id="tabtasks" role="tablist" >
         <li class="nav-item" role="presentation">
           <a
             class="nav-link active"
@@ -36,7 +38,7 @@
           role="tabpanel"
           aria-labelledby="pending-tab"
         >
-          ...
+          <Tasks :tasks="tasks" />
         </div>
         <div
           class="tab-pane fade"
@@ -44,7 +46,7 @@
           role="tabpanel"
           aria-labelledby="completed-tab"
         >
-          ...
+          <Tasks :tasks="tasks" />
         </div>
         <div
           class="tab-pane fade"
@@ -52,7 +54,7 @@
           role="tabpanel"
           aria-labelledby="contact-tab"
         >
-          ...
+        
         </div>
       </div>
     </div>
@@ -61,9 +63,9 @@
 
 <script>
 import axios from "axios";
-import { required, minLength } from "vuelidate/lib/validators";
 import { Global } from "../Global";
 import Navbar from "./Navbar";
+import Tasks from "./Tasks";
 export default {
   name: "Home",
   data() {
@@ -79,7 +81,8 @@ export default {
   },
 
   components: {
-    Navbar
+    Navbar,
+    Tasks
   },
   methods: {
     getToken() {
@@ -109,4 +112,8 @@ export default {
 };
 </script>
 
-<style></style>j
+<style scope>
+.tabstaks_box{
+  width: 70%;
+}
+</style>j

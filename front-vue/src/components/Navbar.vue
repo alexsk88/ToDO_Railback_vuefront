@@ -1,6 +1,8 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <span class="mx-5 navbar-brand pointer" @click="irahome" >Navbar</span>
+    <span class="mx-5 navbar-brand pointer" @click="irahome" >
+      ToDo List
+    </span>
     <button
       class="navbar-toggler"
       type="button"
