@@ -17,7 +17,7 @@ class TasksController < ApplicationController
     # Handle Errors
 
     def index
-        @tasks = Task.all
+        @tasks = Task.where(user_id: @user.id)
         render json: {tasks: @tasks, status: :success}
     end
 
@@ -59,6 +59,6 @@ class TasksController < ApplicationController
     end
 
     def task_params
-        params.require(:task).permit(:title, :content, :date_start, :date_end)
+        params.require(:task).permit(:title, :content, :date_start, :date_end, :state)
     end
 end

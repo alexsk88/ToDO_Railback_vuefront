@@ -5,5 +5,6 @@ class Task < ApplicationRecord
     validates :content, presence: true, length: {minimum:4, maximum:200}
     validates :date_end, presence: true
     validates :date_start, presence: true
+    validates :state, presence: true
 
 end
