@@ -6,15 +6,15 @@ class UsersController < ApplicationController
       @user = User.create(user_params)
       if @user.valid?
         token = encode_token({user_id: @user.id})
-        render json: {user: @user, token: token}
+        render json: {user: @user, token: token, status: :success}
       else
-        render json: {error: "Invalid username or password"}
+        render json: {error: @user.errors.full_messages}
       end
     end
   
     # LOGGING IN
     def login
-      @user = User.find_by(username: params[:username])
+      @user = User.find_by(email: params[:email])
   
       if @user && @user.authenticate(params[:password])
         token = encode_token({user_id: @user.id})
@@ -32,7 +32,7 @@ class UsersController < ApplicationController
     private
   
     def user_params
-      params.permit(:username, :password, :age)
+      params.permit(:username, :password, :age ,:email)
     end
   
 end
