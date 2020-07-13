@@ -33,7 +33,7 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            {{nameuser}}
+            {{nameuser}} 
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="#">Mi Perfil</a>

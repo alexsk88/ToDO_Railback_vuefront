@@ -1,13 +1,13 @@
 <div class="container-fluid login_component flexcolumcenter">
     <div class="row">
       <div class="col m-3 imagen_logo flexcolumcenter">
-        <h1>ToDo List</h1> <br>
-        <img src="../assets/imgcardlogin.jpg" 
+        <h1  class="title-logo">ToDo List</h1> <br>
+        <img src="../assets/logon.png" 
              alt="img_login todo"
              class="imgcard-logo img-fluid">
       </div>
       <div class="col m-3 flexcolumcenter">
-        <form @submit.prevent="submitFormLogin()">
+        <form @submit.prevent="submitFormLogin()" class="form_login">
             <h1>LOG IN</h1>
             <small class="form-text text-danger">
                 <b>{{error}}</b>

@@ -42,6 +42,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Modak&display=swap');
 .login_component {
   width: 100vw;
   height: 100vh;
@@ -50,7 +51,13 @@ export default {
   align-items: center;
 }
 .imgcard-logo{
-  width: 400px;
+  width: 500px;
   height: 400px;
+}
+.form_login{
+  width: 60%;
+}
+.title-logo{
+  font-family: 'Modak', cursive;
 }
 </style>
