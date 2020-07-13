@@ -1,7 +1,9 @@
 <template>
   <div>
     <Navbar />
-    <div class="container my-5 animate__animated animate__fadeInLeft animate__faster">
+    <div
+      class="container my-5 animate__animated animate__fadeInLeft animate__faster"
+    >
       <h1 v-if="!isEdit">Add Task</h1>
       <h1 v-if="isEdit">Edit Task</h1>
       <form @submit.prevent="HandleFormTaks" class="formtasks">
@@ -13,8 +15,10 @@
             id="title"
             aria-describedby="titleHelp"
             v-model.trim="$v.task.title.$model"
-            :class="{'is-valid':!$v.task.title.$invalid,
-            'is-invalid':$v.task.title.$invalid}"
+            :class="{
+              'is-valid': !$v.task.title.$invalid,
+              'is-invalid': $v.task.title.$invalid
+            }"
           />
           <small id="emailHelp" class="form-text text-muted"
             >We'll never share your email with anyone else.</small
@@ -28,37 +32,59 @@
             id="content"
             rows="3"
             v-model.trim="$v.task.content.$model"
-            :class="{'is-valid':!$v.task.content.$invalid,
-            'is-invalid':$v.task.content.$invalid}"
+            :class="{
+              'is-valid': !$v.task.content.$invalid,
+              'is-invalid': $v.task.content.$invalid
+            }"
           ></textarea>
         </div>
 
         <div class="form-group">
           <label for="date_start">Date Start</label>
-          <input type="date" class="form-control" 
-          v-model.trim="$v.task.date_start.$model"
-          :class="{'is-valid':!$v.task.date_start.$invalid,
-            'is-invalid':$v.task.date_start.$invalid}"
-          id="date_start" rows="3" />
+          <input
+            type="date"
+            class="form-control"
+            v-model.trim="$v.task.date_start.$model"
+            :class="{
+              'is-valid': !$v.task.date_start.$invalid,
+              'is-invalid': $v.task.date_start.$invalid
+            }"
+            id="date_start"
+            rows="3"
+          />
         </div>
 
         <div class="form-group">
           <label for="date_end">Date End</label>
-          <input type="date" class="form-control" 
-          v-model.trim="$v.task.date_end.$model"
-          :class="{'is-valid':!$v.task.date_end.$invalid,
-            'is-invalid':$v.task.date_end.$invalid}"
-          id="date_end" rows="3" />
+          <input
+            type="date"
+            class="form-control"
+            v-model.trim="$v.task.date_end.$model"
+            :class="{
+              'is-valid': !$v.task.date_end.$invalid,
+              'is-invalid': $v.task.date_end.$invalid
+            }"
+            id="date_end"
+            rows="3"
+          />
         </div>
 
         <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input" 
-          v-model="task.state" id="state"  />
+          <input
+            type="checkbox"
+            class="form-check-input"
+            v-model="$v.task.state.$model"
+            id="state"
+          />
           <label class="form-check-label" for="state">State</label>
         </div>
-        <button type="submit" class="btn btn-primary"
-        :disabled="$v.task.$invalid">
-        {{isEdit ? 'Update': 'Save'}}</button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          :disabled="$v.task.$invalid"
+        >
+          {{ isEdit ? "Update" : "Save" }}
+        </button>
       </form>
     </div>
   </div>
@@ -68,7 +94,7 @@
 import axios from "axios";
 import { required, minLength } from "vuelidate/lib/validators";
 import { Global } from "../Global";
-import { Token } from "../GetUser";
+import { TokenBarer } from "../GetUser";
 import Task from "../models/TaskModel";
 import Navbar from "./Navbar";
 
@@ -77,6 +103,7 @@ export default {
   data() {
     return {
       isEdit: false,
+      tokenbarer: TokenBarer,
       id: null,
       task: new Task("", "", "", "", false),
       url: Global.url
@@ -93,13 +120,14 @@ export default {
         minLength: minLength(2)
       },
       date_start: {
-        required,
-    
+        required
       },
       date_end: {
-        required,
-       
+        required
       },
+      state:{
+
+      }
 
       // image: null
     }
@@ -115,18 +143,33 @@ export default {
     Navbar
   },
   methods: {
-    gettaskbyID() {
-
-    },
-    HandleFormTaks(){
-        console.log(this.task);
+    gettaskbyID() {},
+    HandleFormTaks() {
+      let configAxios = {
+        headers: {
+          Authorization: this.tokenbarer
+        }
+      };
+      console.log(this.task);
+      axios
+        .post(`${this.url}tasks/create`, this.task,configAxios)
+        .then(res => {
+          if (res.data.status == "success") {
+            
+            console.log("SUCCES>",this.tasks);
+          } else if (res.data.status == "error") {
+            console.log("ERROR>",res);
+            
+          }
+        })
+        .catch(err => console.log(err));
     }
   }
 };
 </script>
 
 <style scope>
-.formtasks{
-    width: 60%;
+.formtasks {
+  width: 60%;
 }
 </style>

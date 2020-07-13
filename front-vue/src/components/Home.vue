@@ -5,7 +5,7 @@
       <h1>My Tasks</h1>
 
       <router-link to="/addtask"  class="btn btn-danger my-3 text-white">Add task</router-link>
-      <ul class="nav nav-tabs tabstaks_box" id="tabtasks" role="tablist" >
+      <ul class="nav nav-tabs tabstaks_box mx-auto" id="tabtasks" role="tablist" >
         <li class="nav-item" role="presentation">
           <a
             class="nav-link active"
@@ -31,7 +31,7 @@
           >
         </li>
       </ul>
-      <div class="tab-content" id="tabtasksContent">
+      <div class="tab-content tabstaks_box mx-auto" id="tabtasksContent">
         <div
           class="tab-pane fade show active"
           id="pending"
@@ -64,6 +64,7 @@
 <script>
 import axios from "axios";
 import { Global } from "../Global";
+import { TokenBarer } from "../GetUser";
 import Navbar from "./Navbar";
 import Tasks from "./Tasks";
 export default {
@@ -71,12 +72,11 @@ export default {
   data() {
     return {
       tasks: null,
-      configAxios: null,
+      tokenbarer: TokenBarer,
       url: Global.url
     };
   },
-  mounted() {
-    this.getToken();
+  beforeMount() {
     this.getTasks();
   },
 
@@ -85,20 +85,17 @@ export default {
     Tasks
   },
   methods: {
-    getToken() {
-      // Este metodo se puede modular
-      let token = localStorage.getItem("token");
-      // console.log( localStorage.getItem('token'));
-      this.configAxios = {
-        headers: {
-          Authorization: "Bearer " + token
-        }
-      };
-    },
+    
     getTasks() {
+      let configAxios = {
+        headers: {
+          Authorization: this.tokenbarer
+        }
+      }
       axios
-        .get(`${this.url}tasks/getall`, this.configAxios)
+        .get(`${this.url}tasks/getall`, configAxios)
         .then(res => {
+    
           if (res.data.status == "success") {
             this.tasks = res.data.tasks;
             console.log(this.tasks);
@@ -114,6 +111,6 @@ export default {
 
 <style scope>
 .tabstaks_box{
-  width: 70%;
+  width: 60% !important;
 }
 </style>j
