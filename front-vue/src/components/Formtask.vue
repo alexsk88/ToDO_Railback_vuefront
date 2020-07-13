@@ -1,94 +1,4 @@
-<template>
-  <div>
-    <Navbar />
-    <div
-      class="container my-5 animate__animated animate__fadeInLeft animate__faster"
-    >
-      <h1 v-if="!isEdit">Add Task</h1>
-      <h1 v-if="isEdit">Edit Task</h1>
-      <form @submit.prevent="HandleFormTaks" class="formtasks">
-        <div class="form-group">
-          <label for="title">Title</label>
-          <input
-            type="text"
-            class="form-control"
-            id="title"
-            aria-describedby="titleHelp"
-            v-model.trim="$v.task.title.$model"
-            :class="{
-              'is-valid': !$v.task.title.$invalid,
-              'is-invalid': $v.task.title.$invalid
-            }"
-          />
-          <small id="emailHelp" class="form-text text-muted"
-            >We'll never share your email with anyone else.</small
-          >
-        </div>
-        <div class="form-group">
-          <label for="content">Content</label>
-          <textarea
-            type="text"
-            class="form-control"
-            id="content"
-            rows="3"
-            v-model.trim="$v.task.content.$model"
-            :class="{
-              'is-valid': !$v.task.content.$invalid,
-              'is-invalid': $v.task.content.$invalid
-            }"
-          ></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="date_start">Date Start</label>
-          <input
-            type="date"
-            class="form-control"
-            v-model.trim="$v.task.date_start.$model"
-            :class="{
-              'is-valid': !$v.task.date_start.$invalid,
-              'is-invalid': $v.task.date_start.$invalid
-            }"
-            id="date_start"
-            rows="3"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="date_end">Date End</label>
-          <input
-            type="date"
-            class="form-control"
-            v-model.trim="$v.task.date_end.$model"
-            :class="{
-              'is-valid': !$v.task.date_end.$invalid,
-              'is-invalid': $v.task.date_end.$invalid
-            }"
-            id="date_end"
-            rows="3"
-          />
-        </div>
-
-        <div class="form-group form-check">
-          <input
-            type="checkbox"
-            class="form-check-input"
-            v-model="$v.task.state.$model"
-            id="state"
-          />
-          <label class="form-check-label" for="state">State</label>
-        </div>
-        <button
-          type="submit"
-          class="btn btn-primary"
-          :disabled="$v.task.$invalid"
-        >
-          {{ isEdit ? "Update" : "Save" }}
-        </button>
-      </form>
-    </div>
-  </div>
-</template>
+<template src="./Formtask.html"></template>
 
 <script>
 import axios from "axios";
@@ -125,9 +35,7 @@ export default {
       date_end: {
         required
       },
-      state:{
-
-      }
+      state: {}
 
       // image: null
     }
@@ -143,26 +51,62 @@ export default {
     Navbar
   },
   methods: {
-    gettaskbyID() {},
+    gettaskbyID() {
+      let configAxios = {
+        headers: {
+          Authorization: this.tokenbarer
+        }
+      };
+      // console.log(configAxios);
+      axios
+        .get(`${this.url}tasks/getone?id=${this.id}`, configAxios)
+        .then(res => {
+          // console.log("DATA ",res);
+          if (res.data.status == "success") {
+            this.task = res.data.tasks;
+            this.task.date_start = new Date(this.task.date_start)
+              .toISOString()
+              .slice(0, 10);
+            this.task.date_end = new Date(this.task.date_end)
+              .toISOString()
+              .slice(0, 10);
+            // console.log(this.task);
+          } else if (res.data.status == "error") {
+            console.log("ERROR>", res);
+          }
+        })
+        .catch(err => console.log(err));
+    },
     HandleFormTaks() {
       let configAxios = {
         headers: {
           Authorization: this.tokenbarer
         }
       };
-      console.log(this.task);
-      axios
-        .post(`${this.url}tasks/create`, this.task,configAxios)
-        .then(res => {
-          if (res.data.status == "success") {
-            
-            console.log("SUCCES>",this.tasks);
-          } else if (res.data.status == "error") {
-            console.log("ERROR>",res);
-            
-          }
-        })
-        .catch(err => console.log(err));
+      // console.log(this.task);
+      if (this.isEdit) {
+        axios
+          .put(`${this.url}tasks/update?id=${this.id}`, this.task, configAxios)
+          .then(res => {
+            if (res.data.status == "success") {
+              console.log("EDIATDO>", this.tasks);
+            } else if (res.data.status == "error") {
+              console.log("ERROR al editat>", res);
+            }
+          })
+          .catch(err => console.log(err));
+      } else {
+        axios
+          .post(`${this.url}tasks/create`, this.task, configAxios)
+          .then(res => {
+            if (res.data.status == "success") {
+              console.log("SUCCES>", this.tasks);
+            } else if (res.data.status == "error") {
+              console.log("ERROR>", res);
+            }
+          })
+          .catch(err => console.log(err));
+      }
     }
   }
 };

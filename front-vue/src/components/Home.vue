@@ -1,7 +1,7 @@
 <template>
   <div >
     <Navbar />
-    <div class="container my-5">
+    <div class="container my-5 animate__animated animate__fadeInLeft animate__faster">
       <h1>My Tasks</h1>
 
       <router-link to="/addtask"  class="btn btn-danger my-3 text-white">Add task</router-link>
