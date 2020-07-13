@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
-    before_action :authorized
-    before_action :set_task,  except: [ :index, :create]
+    before_action :authorized, except: [:mipdf]
+    before_action :set_task,  except: [ :index, :create, :mipdf]
     
     # Handle Errors
     rescue_from Exception do |e|
@@ -56,6 +56,18 @@ class TasksController < ApplicationController
         else
             render json: {message:@task.errors, status: 'error'}
         end
+    end
+
+    def mipdf 
+        @id_user = params[:id_user]
+        @state = params[:state]
+        @tasks = Task.where("user_id = ? AND state = ?",@id_user,@state)
+  
+        pdf_html = ActionController::Base.new.render_to_string(template: 'tasks/reporte.html.erb', 
+            :locals => {:tasks => @tasks})
+        pdf = WickedPdf.new.pdf_from_string(pdf_html)
+        send_data pdf, filename: 'file_name.pdf'
+   
     end
 
     private

@@ -10,5 +10,8 @@ Rails.application.routes.draw do
   put "/api/tasks/update", to: "tasks#update"
   delete "/api/tasks/remove", to: "tasks#remove"
 
+  # Send PDF
+  get "/api/tasks/pdf", to: "tasks#mipdf"
+
   get "/auto_login", to: "users#auto_login"
 end

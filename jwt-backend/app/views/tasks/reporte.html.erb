@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <%= wicked_pdf_stylesheet_link_tag "pdf" -%>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css">
+</head>
+<body>
+    <div class="jumbotron">
+        <div class="d-flex justify-content-start align-items-start">
+            <h1 class="mx-3">Reporte de tareas</h1>
+            <img src="https://cdn4.iconfinder.com/data/icons/ikooni-outline-seo-web/128/seo-12-512.png"
+            width="12%" alt="Logo">
+        </div>
+      
+        <div class="my-4">
+         <% tasks.each do |task| %>
+            <div class="list-group" >
+            <span class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                <h4 class="mb-1"><%= task.title %></h4>
+                <small class="<%= !task.state ? "text-danger" : "text-success"%>">
+                 <b style="font-size: x-large;"><%= !task.state ? "Pendiente" : "complete"%></b>
+                </small>
+                </div>
+            </span>
+            </div>
+        <% end %>
+        <br/>
+     
+        
+      </div>
+</body>
+</html>
