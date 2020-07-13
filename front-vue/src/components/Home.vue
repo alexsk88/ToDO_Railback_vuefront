@@ -1,11 +1,19 @@
 <template>
-  <div >
+  <div>
     <Navbar />
-    <div class="container my-5 animate__animated animate__fadeInLeft animate__faster">
+    <div
+      class="container my-5 animate__animated animate__fadeInLeft animate__faster"
+    >
       <h1>My Tasks</h1>
 
-      <router-link to="/addtask"  class="btn btn-danger my-3 text-white">Add task</router-link>
-      <ul class="nav nav-tabs tabstaks_box mx-auto" id="tabtasks" role="tablist" >
+      <router-link to="/addtask" class="btn btn-danger my-3 text-white"
+        >Add task</router-link
+      >
+      <ul
+        class="nav nav-tabs tabstaks_box mx-auto"
+        id="tabtasks"
+        role="tablist"
+      >
         <li class="nav-item" role="presentation">
           <a
             class="nav-link active"
@@ -38,7 +46,7 @@
           role="tabpanel"
           aria-labelledby="pending-tab"
         >
-          <Tasks :tasks="tasks" />
+          <Tasks query="false" />
         </div>
         <div
           class="tab-pane fade"
@@ -46,71 +54,38 @@
           role="tabpanel"
           aria-labelledby="completed-tab"
         >
-          <Tasks :tasks="tasks" />
+          <Tasks query="true" />
         </div>
         <div
           class="tab-pane fade"
           id="contact"
           role="tabpanel"
           aria-labelledby="contact-tab"
-        >
-        
-        </div>
+        ></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import { Global } from "../Global";
-import { TokenBarer } from "../GetUser";
 import Navbar from "./Navbar";
 import Tasks from "./Tasks";
 export default {
   name: "Home",
   data() {
-    return {
-      tasks: null,
-      tokenbarer: TokenBarer,
-      url: Global.url
-    };
-  },
-  beforeMount() {
-    this.getTasks();
+    return {};
   },
 
   components: {
     Navbar,
     Tasks
   },
-  methods: {
-    
-    getTasks() {
-      let configAxios = {
-        headers: {
-          Authorization: this.tokenbarer
-        }
-      }
-      axios
-        .get(`${this.url}tasks/getall`, configAxios)
-        .then(res => {
-    
-          if (res.data.status == "success") {
-            this.tasks = res.data.tasks;
-            console.log(this.tasks);
-          } else if (res.data.status == "error") {
-            console.log(res.data.errors);
-          }
-        })
-        .catch(err => console.log(err));
-    }
-  }
+  methods: {}
 };
 </script>
 
 <style scope>
-.tabstaks_box{
+.tabstaks_box {
   width: 60% !important;
-}
-</style>j
+}</style
+>j

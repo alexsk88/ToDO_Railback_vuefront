@@ -7,6 +7,7 @@ import { Global } from "../Global";
 import { TokenBarer } from "../GetUser";
 import Task from "../models/TaskModel";
 import Navbar from "./Navbar";
+import swal from "sweetalert";
 
 export default {
   name: "FormTask",
@@ -90,6 +91,11 @@ export default {
           .then(res => {
             if (res.data.status == "success") {
               console.log("EDIATDO>", this.tasks);
+              swal({
+                  title: "Edited Task",
+                  icon: "success"
+                });
+                this.$router.push('/home')
             } else if (res.data.status == "error") {
               console.log("ERROR al editat>", res);
             }
@@ -100,9 +106,18 @@ export default {
           .post(`${this.url}tasks/create`, this.task, configAxios)
           .then(res => {
             if (res.data.status == "success") {
+              swal({
+                  title: "Crated Task",
+                  icon: "success"
+                });
+                this.$router.push('/home')
               console.log("SUCCES>", this.tasks);
             } else if (res.data.status == "error") {
               console.log("ERROR>", res);
+              swal({
+                  title: "Error Crated Task",
+                  icon: "error"
+                });
             }
           })
           .catch(err => console.log(err));

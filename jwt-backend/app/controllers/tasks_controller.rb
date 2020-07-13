@@ -17,7 +17,13 @@ class TasksController < ApplicationController
     # Handle Errors
 
     def index
-        @tasks = Task.where(user_id: @user.id)
+    
+        if params[:state].present? && !params[:state].nil? 
+            @tasks = Task.where(user_id: @user.id, state: params[:state])
+        else
+            @tasks = Task.where(user_id: @user.id)
+        end
+      
         render json: {tasks: @tasks, status: :success}
     end
 

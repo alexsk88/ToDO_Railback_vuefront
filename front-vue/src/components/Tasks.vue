@@ -7,8 +7,9 @@
     >
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">{{ item.title }}</h5>
-        <small :class="item.state ? 'text-success': 'text-danger'"
-        >{{ item.state ? 'Completed': 'Pending' }}</small>
+        <small :class="item.state ? 'text-success' : 'text-danger'">{{
+          item.state ? "Completed" : "Pending"
+        }}</small>
       </div>
       <p class="mb-1">{{ item.content }}</p>
       <small class="text-success"
@@ -35,13 +36,13 @@
           title="Show"
           >visibility</router-link
         >
-        <router-link
-          to="/home"
-          class="material-icons text-danger"
+        <span
+          @click="deleteTask(item.id, item.title)"
+          class="material-icons text-danger pointer"
           data-toggle="tooltip"
           data-placement="top"
           title="Remove"
-          >delete</router-link
+          >delete</span
         >
       </div>
     </span>
@@ -49,11 +50,73 @@
 </template>
 
 <script>
+import axios from "axios";
+import swal from "sweetalert";
+import { Global } from "../Global";
+import { TokenBarer } from "../GetUser";
 export default {
   name: "Tasks",
-  props: ["tasks"],
-  mounted() {
-    // console.log("ME MORNTE TSKS", this.tasks);
+  props: ["query"],
+  data() {
+    return {
+      tasks: null,
+      tokenbarer: TokenBarer,
+      url: Global.url
+    };
+  },
+  beforeMount() {
+    this.getTasks();
+  },
+  methods: {
+    deleteTask(id, name) {
+        let configAxios = {
+        headers: {
+          Authorization: this.tokenbarer
+        }
+      };
+      swal({
+        title: "Are you sure you want to delete ?",
+        text: name,
+        buttons: true,
+        dangerMode: true
+      }).then(willDelete => {
+        if (willDelete) {
+          axios
+            .delete(`${this.url}tasks/remove?id=${id}/`,configAxios)
+            .then(res => {
+              console.log(res);
+              console.log("-> ", res.data.status);
+              if (res.data.status == "success") {
+                swal({
+                  title: "Deleted Task",
+                  icon: "success"
+                });
+                 this.getTasks()
+              }
+            });
+        } else {
+          swal("You have canceled the deletion");
+        }
+      });
+    },
+    getTasks() {
+      let configAxios = {
+        headers: {
+          Authorization: this.tokenbarer
+        }
+      };
+      axios
+        .get(`${this.url}tasks/getall?state=${this.query}`, configAxios)
+        .then(res => {
+          if (res.data.status == "success") {
+            this.tasks = res.data.tasks;
+            console.log(this.tasks);
+          } else if (res.data.status == "error") {
+            console.log(res.data.errors);
+          }
+        })
+        .catch(err => console.log(err));
+    }
   }
 };
 </script>
