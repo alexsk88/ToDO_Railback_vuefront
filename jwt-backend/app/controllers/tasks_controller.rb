@@ -17,7 +17,7 @@ class TasksController < ApplicationController
     # Handle Errors
 
     def index
-    
+
         if params[:state].present? && !params[:state].nil? 
             @tasks = Task.where(user_id: @user.id, state: params[:state])
         else

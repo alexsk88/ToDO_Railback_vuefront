@@ -25,9 +25,10 @@ export default {
         .then(res=>{
           if( res.data.status == 'success'){
             console.log("Suucces", res);
+            localStorage.clear()
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('identity', JSON.stringify(res.data.user));
-            this.$router.push('/home')
+            this.$router.go('/home')
           }
           else if (res.data.status == 'error') {
             this.error = res.data.error

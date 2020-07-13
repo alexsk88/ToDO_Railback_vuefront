@@ -1,6 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <span class="mx-5 navbar-brand pointer" @click="irahome" >
+    <span class="mx-5 navbar-brand pointer navlogoletter" @click="irahome" >
+      <img src="../assets/logon.png" class="imglognav" alt="">
       ToDo List
     </span>
     <button
@@ -72,10 +73,21 @@ export default {
       logOut(){
         localStorage.removeItem('identity');
         localStorage.removeItem('token');
+        localStorage.clear()
         this.$router.push('/')
       }
     }
 };
 </script>
 
-<style></style>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Modak&display=swap');
+.imglognav{
+  width: 35px;
+  height:35px;
+}
+.navlogoletter{
+  font-family: 'Modak', cursive;
+  font-size: 28px;
+}
+</style>
