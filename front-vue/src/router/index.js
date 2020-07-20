@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Login from "@/components/Login/";
 import Home from "@/components/Home/";
 import Formtask from "@/components/Formtask/";
+import Demo from "@/components/Demo/";
 
 Vue.use(Router);
 
@@ -59,6 +60,11 @@ export default new Router({
       beforeEnter : guardMyroute,
       name: "addtask",
       component: Formtask
+    },
+    {
+      path: "/demo",
+      name: "demo",
+      component: Demo
     }
   ],
   mode: "history"

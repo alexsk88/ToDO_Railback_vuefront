@@ -63,11 +63,13 @@
           aria-labelledby="contact-tab"
         ></div>
       </div>
+ 
     </div>
   </div>
 </template>
 
 <script>
+
 import Navbar from "./Navbar";
 import Tasks from "./Tasks";
 export default {
